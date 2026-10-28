@@ -1,0 +1,12 @@
+# Секреты и локальные данные — никогда в репозиторий
+*.env
+config.local.json
+secrets.json
+backup.log
+*.key
+restic.exe
+restic_password
+
+# Скачанные/собранные данные
+data/
+*.sql.gz

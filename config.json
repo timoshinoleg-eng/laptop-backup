@@ -1,0 +1,53 @@
+{
+  "$comment": "Конфиг ежедневного бэкапа файлов ноутбука. ПРАВИТЬ: пути, репозиторий, ключи. Ключи НЕ хранить здесь — они в переменных окружения/DPAPI.",
+
+  "repository": "s3:https://s3.cloud.ru/backups/laptop",
+  "s3": {
+    "endpoint": "https://s3.cloud.ru",
+    "bucket": "backups",
+    "region": "ru-central1",
+    "bucketLookup": "dns",
+    "$lookupNote": "dns = vhost-style https://backups.s3.cloud.ru/... — единственный вариант, который на живом эндпоинте реально доходит до бакета (проверено 28.10.2026: path-style отдаёт 400 'missing tenant id', vhost отдаёт 403 'Access Denied' — бакет найден)."
+  },
+
+  "paths": [
+    "C:\\Users\\tim\\Documents",
+    "C:\\Users\\tim\\Desktop",
+    "C:\\Users\\tim\\Downloads"
+  ],
+
+  "$pathsNote": "ЗАМЕНИ на свои пути. Пути в конфиге НЕ чувствительны к имени пользователя — подставь реальный профиль.",
+
+  "excludes": [
+    "*.tmp",
+    "~$*",
+    "node_modules",
+    ".git/objects/pack/tmp_*",
+    "AppData/Local/Temp/**",
+    "*.iso",
+    "*.vhd",
+    "*.vmdk"
+  ],
+
+  "retention": {
+    "keepDaily": 14,
+    "keepWeekly": 8,
+    "keepMonthly": 6
+  },
+
+  "heartbeat": {
+    "s3Key": "laptop/heartbeat.json",
+    "maxAgeHours": 30
+  },
+
+  "telegram": {
+    "chatId": "",
+    "botTokenEnvVar": "BACKUP_TELEGRAM_BOT_TOKEN",
+    "$tokenNote": "Токен бота НЕ в конфиге. Задаётся переменной окружения с именем из botTokenEnvVar."
+  },
+
+  "check": {
+    "fullCheckWeekly": true,
+    "$checkNote": "restic check — полная проверка целостности. Раз в неделю, не каждый день: на больших объёмах это долго."
+  }
+}
